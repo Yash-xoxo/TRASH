@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// Function to reverse a string manually
+void reverseString(char str[]) {
+    int length = strlen(str);
+    for (int i = 0; i < length / 2; i++) {
+        char temp = str[i];
+        str[i] = str[length - i - 1];
+        str[length - i - 1] = temp;
+    }
+}
+
+// Function to convert a string to uppercase
+void toUpperCase(char str[]) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        str[i] = toupper(str[i]);
+    }
+}
+
+// Function to convert a string to lowercase
+void toLowerCase(char str[]) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        str[i] = tolower(str[i]);
+    }
+}
+
+// Function to remove newline character from fgets input
+void removeNewline(char str[]) {
+    size_t len = strlen(str);
+    if (len > 0 && str[len - 1] == '\n') {
+        str[len - 1] = '\0';
+    }
+}
+
+int main() {
+    char str1[100], str2[100], str3[100];
+
+    printf("Enter first string: ");
+    fgets(str1, sizeof(str1), stdin);
+    removeNewline(str1);
+
+    printf("Enter second string: ");
+    fgets(str2, sizeof(str2), stdin);
+    removeNewline(str2);
+
+    // String length
+    printf("\nLength of first string: %lu", strlen(str1));
+    printf("\nLength of second string: %lu", strlen(str2));
+
+    // String copy
+    strcpy(str3, str1);
+    printf("\nCopied string: %s", str3);
+
+    // String concatenation
+    strcat(str1, str2);
+    printf("\nConcatenated string: %s", str1);
+
+    // String comparison
+    int cmp = strcmp(str1, str2);
+    if (cmp == 0)
+        printf("\nStrings are equal.");
+    else if (cmp > 0)
+        printf("\nFirst string is greater.");
+    else
+        printf("\nSecond string is greater.");
+
+    
+
+    // Convert to uppercase
+    toUpperCase(str3);
+    printf("\nUppercase version: %s", str3);
+
+    // Convert to lowercase
+    toLowerCase(str3);
+    printf("\nLowercase version: %s", str3);
+
+    // Substring search
+    char *substr = strstr(str1, str2);
+    if (substr != NULL)
+        printf("\nSubstring found at position: %ld", substr - str1);
+    else
+        printf("\nSubstring not found.");
+
+    return 0;
+}
