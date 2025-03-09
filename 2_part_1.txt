@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void createFile() {
+    FILE *file = fopen("example.txt", "w");
+    if (file == NULL) {
+        printf("Error creating the file!\n");
+        return;
+    }
+    fprintf(file,"Prachi Adhikari\n");
+    fclose(file);
+    printf("File created and data written successfully.\n");
+}
+
+void readFile() {
+    FILE *file = fopen("example.txt", "r");
+    if (file == NULL) {
+        printf("Error opening the file for reading!\n");
+        return;
+    }
+    char ch;
+    printf("Contents of the file are:\n");
+    while ((ch = fgetc(file)) != EOF) {
+        putchar(ch);
+    }
+    fclose(file);
+}
+
+void appendToFile() {
+    FILE *file = fopen("example.txt", "a");
+    if (file == NULL) {
+        printf("Error opening the file for appending!\n");
+        return;
+    }
+    fprintf(file, "This line was appended to the file.\n");
+    fclose(file);
+    printf("Data appended successfully.\n");
+}
+
+void fileErrorHandling() {
+    FILE *file = fopen("nonexistentfile.txt", "r");
+    if (file == NULL) {
+        perror("Error");
+    }
+}
+
+int main() {
+    // Create a file and write to it
+    createFile();
+
+    // Read from the file
+    readFile();
+
+    // Append new data to the file
+    appendToFile();
+
+    // Read the updated file
+    printf("\n\nReading the updated file:\n");
+    readFile();
+
+    // Demonstrating file error handling
+    fileErrorHandling();
+
+    return 0;
+}
