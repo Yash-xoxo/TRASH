@@ -1,0 +1,457 @@
+ 
+Task Solutions
+Linux Tasks
+Q1. Install RHEL 9 on VirtualBox and verify system information
+bash
+# After installation and login as root:
+cat /etc/redhat-release  # Check OS version
+uname -m                # Check architecture
+lscpu                   # Detailed CPU information
+Q2. Configure YUM repository for offline package installation
+bash
+# Mount the ISO
+mkdir /mnt/rhel9
+mount -o loop /path/to/RHEL9.iso /mnt/rhel9
+
+# Create repo file
+cat > /etc/yum.repos.d/rhel9-iso.repo <<EOF
+[rhel9-iso]
+name=RHEL 9 ISO Repository
+baseurl=file:///mnt/rhel9
+enabled=1
+gpgcheck=1
+gpgkey=file:///mnt/rhel9/RPM-GPG-KEY-redhat-release
+EOF
+
+# Verify
+yum repolist
+Q3. Install and start Apache web server
+bash
+# Install httpd
+dnf install httpd -y
+
+# Start and enable
+systemctl start httpd
+systemctl enable httpd
+
+# Open firewall if needed
+firewall-cmd --add-service=http --permanent
+firewall-cmd --reload
+
+# Verify
+curl http://localhost
+Q4. Set up SSH passwordless authentication
+bash
+# Generate key pair
+ssh-keygen -t rsa -b 4096
+
+# Copy to teammate's system
+ssh-copy-id username@teammate_ip
+
+# Test connection
+ssh username@teammate_ip
+Q5. Create user with sudo privileges
+bash
+# Create user
+adduser summer
+passwd summer  # Set password when prompted
+
+# Add to sudoers
+usermod -aG wheel summer
+
+# Verify
+su - summer
+sudo whoami  # Should return "root"
+Python Tasks
+Q1. File Handling
+python
+# Create and write initial content
+with open('mydata.txt', 'w') as f:
+    f.write("Initial content line 1\nLine 2")
+
+# Read and print original content
+with open('mydata.txt', 'r') as f:
+    print("Original content:")
+    print(f.read())
+
+# Overwrite with new content
+with open('mydata.txt', 'w') as f:
+    f.write("New content line 1\nLine 2\nLine 3")
+
+# Read and print updated content
+with open('mydata.txt', 'r') as f:
+    print("\nUpdated content:")
+    print(f.read())
+Q2. NumPy Array Analysis
+python
+import numpy as np
+
+# Create array
+arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+# Print array and properties
+print("Array:", arr)
+print("Shape:", arr.shape)
+print("Size:", arr.size)
+print("Data type:", arr.dtype)
+
+# First 5 elements
+print("\nFirst 5 elements:", arr[:5])
+
+# Modify last 3 elements
+arr[-3:] = [11, 12, 13]
+print("\nModified array:", arr)
+
+# Statistics
+print("\nSum:", np.sum(arr))
+print("Mean:", np.mean(arr))
+print("Standard deviation:", np.std(arr))
+Q3. Simple Decorator
+python
+# simple_decorator.py
+def simple_decorator(func):
+    def wrapper():
+        print("Start")
+        func()
+    return wrapper
+
+@simple_decorator
+def greet():
+    print("Hello!")
+
+greet()
+Q4. NumPy Array Creation
+python
+import numpy as np
+
+# From Python list
+py_list = [1, 2, 3, 4, 5]
+np_array = np.array(py_list)
+print("Array:", np_array)
+print("Size:", np_array.size)
+print("Shape:", np_array.shape)
+
+# Slicing
+print("First 3 elements:", np_array[:3])
+
+# Arrays of zeros and ones
+zeros = np.zeros(5)
+ones = np.ones(5)
+print("\nZeros array:", zeros)
+print("Ones array:", ones)
+Q5. String Methods
+python
+sentence = "Python is powerful and easy to learn"
+
+# Split
+words = sentence.split()
+print("Split words:", words)
+
+# Join
+new_sentence = ' '.join(words)
+print("Joined sentence:", new_sentence)
+Docker Tasks
+Q1. Install Docker on RHEL 9
+bash
+# Install Docker
+dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+dnf install docker-ce docker-ce-cli containerd.io -y
+
+# Start and enable
+systemctl start docker
+systemctl enable docker
+
+# Verify
+docker --version
+Q2. Flask App in Docker
+python
+# app.py
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return "Hello, Docker!"
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+dockerfile
+# Dockerfile
+FROM python:3.9-slim
+WORKDIR /app
+COPY app.py .
+RUN pip install flask
+CMD ["python", "app.py"]
+bash
+# Build and run
+docker build -t flask-app .
+docker run -p 5000:5000 flask-app
+Q3. Dockerfile with Requirements
+dockerfile
+# Dockerfile
+FROM python:3.9
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY app.py .
+CMD ["python", "app.py"]
+Q4. Menu-Based Python Project
+python
+# menu.py
+def main():
+    while True:
+        print("\nMenu:")
+        print("1. Option 1")
+        print("2. Option 2")
+        print("3. Exit")
+        choice = input("Enter choice: ")
+
+        if choice == '1':
+            print("Option 1 selected")
+        elif choice == '2':
+            print("Option 2 selected")
+        elif choice == '3':
+            break
+        else:
+            print("Invalid choice")
+
+if __name__ == "__main__":
+    main()
+dockerfile
+# Dockerfile
+FROM python:3.9
+WORKDIR /app
+COPY menu.py .
+CMD ["python", "menu.py"]
+Q5. Docker-in-Docker
+bash
+# Run dind container
+docker run --privileged -d --name dind docker:dind
+
+# Access container
+docker exec -it dind sh
+
+# Inside container, verify Docker
+docker --version
+docker info
+JavaScript Tasks
+Q1. Run JavaScript with Node.js
+javascript
+// app.js
+console.log("Hello from Node.js!");
+bash
+node app.js
+Q2. Prompt and Alert
+html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Greeting</title>
+</head>
+<body>
+<script>
+    const name = prompt("What's your name?");
+    alert(`Hello, ${name}!`);
+</script>
+</body>
+</html>
+Q3. DOM Manipulation
+html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Manipulation</title>
+</head>
+<body>
+    <p id="message">Original content</p>
+    <script>
+        document.getElementById('message').textContent = "JavaScript is Awesome!";
+    </script>
+</body>
+</html>
+Q4. Dynamic Content Update
+html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Content</title>
+</head>
+<body>
+    <input type="text" id="userInput">
+    <button id="submitBtn">Submit</button>
+    <div id="output"></div>
+
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            const input = document.getElementById('userInput').value;
+            document.getElementById('output').innerText = input;
+        });
+    </script>
+</body>
+</html>
+Q5. Interactive Web App
+Combine solutions from Q1-Q4 into a single HTML file with multiple sections.
+
+Full Stack Tasks
+Q1. Flask Form Handling
+python
+# app.py
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('q', '')
+    return f"You searched for: {query}"
+
+if __name__ == '__main__':
+    app.run()
+html
+<!-- form.html -->
+<form action="/search" method="GET">
+    <input type="text" name="q">
+    <button type="submit">Search</button>
+</form>
+Q2. Dynamic Content with JavaScript
+html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Content</title>
+</head>
+<body>
+    <div id="output"></div>
+    <button id="updateBtn">Update Content</button>
+
+    <script>
+        document.getElementById('updateBtn').addEventListener('click', function() {
+            document.getElementById('output').innerText = "Welcome to Full Stack";
+        });
+    </script>
+</body>
+</html>
+Q3. Flask JSON Response
+python
+@app.route('/data', methods=['POST'])
+def handle_data():
+    data = request.get_json()
+    name = data.get('name', 'Guest')
+    return f"Hello, {name}!"
+Q4. Flask JSON Route
+python
+@app.route('/user')
+def get_user():
+    user = {
+        'name': 'John Doe',
+        'email': 'john@example.com'
+    }
+    return jsonify(user)
+Q5. Form Data to Table
+python
+from flask import Flask, request, render_template_string
+
+app = Flask(__name__)
+entries = []
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        entries.append({
+            'name': request.form.get('name'),
+            'email': request.form.get('email')
+        })
+
+    return render_template_string('''
+        <form method="POST">
+            Name: <input type="text" name="name"><br>
+            Email: <input type="email" name="email"><br>
+            <button type="submit">Submit</button>
+        </form>
+
+        <table border="1">
+            <tr><th>Name</th><th>Email</th></tr>
+            {% for entry in entries %}
+            <tr><td>{{ entry.name }}</td><td>{{ entry.email }}</td></tr>
+            {% endfor %}
+        </table>
+    ''', entries=entries)
+Machine Learning Tasks
+Q1. Marks Prediction Model
+python
+# train_marks_model.py
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+
+# Load data (replace with actual data)
+data = {'Hours': [2, 3, 4, 5, 6], 'Marks': [50, 65, 75, 85, 95]}
+df = pd.DataFrame(data)
+
+X = df[['Hours']]
+y = df['Marks']
+
+model = LinearRegression()
+model.fit(X, y)
+
+print("Coefficient:", model.coef_[0])
+print("Intercept:", model.intercept_)
+Q2. Salary Prediction Model
+python
+# train_salary_model.py
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+import joblib
+
+# Sample data
+data = {'Experience': [1, 2, 3, 4, 5], 'Salary': [40000, 50000, 60000, 70000, 80000]}
+df = pd.DataFrame(data)
+
+X = df[['Experience']]
+y = df['Salary']
+
+model = LinearRegression()
+model.fit(X, y)
+
+joblib.dump(model, 'salary_model.pkl')
+Q3. Load Salary Model
+python
+# predict_salary.py
+import joblib
+
+def predict_salary(years_of_exp):
+    model = joblib.load('salary_model.pkl')
+    return model.predict([[years_of_exp]])[0]
+
+print("Predicted salary for 5 years:", predict_salary(5))
+Q4. House Price Model
+python
+# train_house_price_model.py
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+import joblib
+
+# Sample data
+data = {'Area': [1000, 1500, 2000, 2500, 3000],
+        'Price': [5000000, 7500000, 10000000, 12500000, 15000000]}
+df = pd.DataFrame(data)
+
+X = df[['Area']]
+y = df['Price']
+
+model = LinearRegression()
+model.fit(X, y)
+
+print("Slope (coefficient):", model.coef_[0])
+print("Intercept:", model.intercept_)
+
+joblib.dump(model, 'house_price_model.pkl')
+Q5. Load House Price Model
+python
+# predict_house_price.py
+import joblib
+
+def predict_price(area):
+    model = joblib.load('house_price_model.pkl')
+    return model.predict([[area]])[0]
+
+print("Predicted price for 1200 sq ft:", predict_price(1200))
