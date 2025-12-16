@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Script to install Cloudflared on Ubuntu/Debian systems
+# Run with sudo: sudo bash install_cloudflared.sh
+
+set -e  # Exit on any error
+
+echo "=== Installing Cloudflared ==="
+
+# 1) Ensure required tools are installed
+echo "Step 1: Installing required tools..."
+apt update
+apt install -y curl gnupg ca-certificates
+
+# 2) Create keyrings directory (idempotent)
+echo "Step 2: Creating keyrings directory..."
+mkdir -p --mode=0755 /usr/share/keyrings
+
+# 3) Download Cloudflare's signed key and dearmor it into the keyrings dir
+echo "Step 3: Downloading and installing Cloudflare GPG key..."
+curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | gpg --dearmor -o /usr/share/keyrings/cloudflare-main.gpg
+
+# 4) Add Cloudflare's apt repository
+echo "Step 4: Adding Cloudflare repository..."
+# Detect Ubuntu/Debian release codename
+RELEASE_CODENAME=$(lsb_release -cs)
+echo "Detected release: $RELEASE_CODENAME"
+echo "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared $RELEASE_CODENAME main" \
+  | tee /etc/apt/sources.list.d/cloudflared.list
+
+# 5) Update & install cloudflared
+echo "Step 5: Installing cloudflared..."
+apt update
+apt install -y cloudflared
+
+# 6) Verify installation
+echo "Step 6: Verifying installation..."
+cloudflared --version
+
+echo ""
+echo "=== Cloudflared installed successfully! ==="
+echo "Run 'cloudflared --help' for usage information"
