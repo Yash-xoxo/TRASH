@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Script to install Cloudflared on Fedora/RHEL/CentOS systems
+# Run with sudo: sudo bash install_cloudflared.sh
+
+set -e  # Exit on any error
+
+echo "=== Installing Cloudflared on Fedora ==="
+
+# 1) Ensure required tools are installed
+echo "Step 1: Installing required tools..."
+dnf install -y curl gnupg
+
+# 2) Add Cloudflare's RPM repository
+echo "Step 2: Adding Cloudflare RPM repository..."
+curl -fsSL https://pkg.cloudflare.com/cloudflare-main.repo | tee /etc/yum.repos.d/cloudflare-main.repo
+
+# 3) Import Cloudflare's GPG key
+echo "Step 3: Importing Cloudflare GPG key..."
+rpm --import https://pkg.cloudflare.com/cloudflare-main.gpg
+
+# 4) Install cloudflared
+echo "Step 4: Installing cloudflared..."
+dnf install -y cloudflared
+
+# 5) Verify installation
+echo "Step 5: Verifying installation..."
+cloudflared --version
+
+echo ""
+echo "=== Cloudflared installed successfully! ==="
+echo "Run 'cloudflared --help' for usage information"
