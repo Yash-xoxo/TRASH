@@ -15,9 +15,17 @@ dnf install -y curl gnupg
 echo "Step 2: Adding Cloudflare RPM repository..."
 curl -fsSL https://pkg.cloudflare.com/cloudflare-main.repo | tee /etc/yum.repos.d/cloudflare-main.repo
 
-# 3) Import Cloudflare's GPG key
-echo "Step 3: Importing Cloudflare GPG key..."
-rpm --import https://pkg.cloudflare.com/cloudflare-main.gpg
+
+# 3)--------
+# This requires dnf config-manager
+# Add cloudflared.repo to config-manager
+# Stable
+sudo dnf config-manager --add-repo https://pkg.cloudflare.com/cloudflared.repo
+# Nightly
+sudo dnf config-manager --add-repo https://next.pkg.cloudflare.com/cloudflared.repo
+
+# install cloudflared
+sudo dnf install cloudflared
 
 # 4) Install cloudflared
 echo "Step 4: Installing cloudflared..."
