@@ -5,8 +5,14 @@
 
 set -e  # Exit on any error
 sudo dnf install -y dnf-plugins-core
-sudo dnf config-manager --add-repo \
-https://pkg.cloudflare.com/cloudflared-ascii.repo
+sudo tee /etc/yum.repos.d/cloudflare-cloudflared.repo > /dev/null <<'EOF'
+[cloudflare-cloudflared]
+name=Cloudflare Cloudflared
+baseurl=https://pkg.cloudflare.com/cloudflared/rpm
+enabled=1
+gpgcheck=1
+gpgkey=https://pkg.cloudflare.com/cloudflare.gpg
+EOF
 
 sudo dnf install -y cloudflared
 
