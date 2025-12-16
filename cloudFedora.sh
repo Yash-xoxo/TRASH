@@ -4,17 +4,13 @@
 # Run with sudo: sudo bash install_cloudflared.sh
 
 set -e  # Exit on any error
-sudo dnf install -y dnf-plugins-core
-sudo tee /etc/yum.repos.d/cloudflare-cloudflared.repo > /dev/null <<'EOF'
-[cloudflare-cloudflared]
-name=Cloudflare Cloudflared
-baseurl=https://pkg.cloudflare.com/cloudflared/rpm
-enabled=1
-gpgcheck=1
-gpgkey=https://pkg.cloudflare.com/cloudflare.gpg
-EOF
+curl -fsSL \
+https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 \
+-o cloudflared
 
-sudo dnf install -y cloudflared
+chmod +x cloudflared
+sudo mv cloudflared /usr/local/bin/cloudflared
+
 
 
 cloudflared --version
