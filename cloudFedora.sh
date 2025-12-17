@@ -11,3 +11,4 @@ sudo mv cloudflared /usr/local/bin/
 cloudflared --version
 
 
+sudo cloudflared service install eyJhIjoiODI1ZTMyMWMxMjg3MDNjYWNlNzg5ODM4MmJlNjhiMTYiLCJ0IjoiZGRlMzJkZDQtMjE2NS00Y2JhLWJkNDktZjYyMDM1MDQ4ZDM4IiwicyI6IllUTXpaamc1TXpndE1ESmxOaTAwWVRsakxUbGtZalF0TUdRNE1qVmpPV1ZoWVRneCJ9
