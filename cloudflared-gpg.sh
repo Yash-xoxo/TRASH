@@ -23,8 +23,7 @@ apt install -y cloudflared
 cloudflared --version
 
 
-
----
+NAS - sudo cloudflared service install eyJhIjoiODI1ZTMyMWMxMjg3MDNjYWNlNzg5ODM4MmJlNjhiMTYiLCJ0IjoiNjliMmM1MWItZTE5YS00YWFjLWIwNWMtNzE1OWE0Yzg3MDRhIiwicyI6Ill6Y3pNemxrTWpFdE9HUmxOQzAwTldZd0xUZzVPREl0WWpWaVlUbGpOakEwT1dSaiJ9
 
 
 apt update
