@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 1) Ensure required tools are installed
 apt update
 apt install -y curl gnupg ca-certificates
