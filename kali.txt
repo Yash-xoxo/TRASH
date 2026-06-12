@@ -1,0 +1,1 @@
+airodump-ng --channel 36 wlan0mon
